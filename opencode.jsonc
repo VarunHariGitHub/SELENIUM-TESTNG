@@ -14,28 +14,9 @@
       }
     }
   },
-  "skills": [
-    {
-      "name": "site-inspection",
-      "description": "Use when you need to inspect the live target website DOM to verify locators, discover element IDs/attributes, and find duplicate IDs or hidden elements. Do NOT use for code generation - only for browser inspection.",
-      "location": ".opencode/skills/site-inspection.md"
-    },
-    {
-      "name": "test-healing",
-      "description": "Use when diagnosing and fixing test failures. Follows a triage flow: classify error type, inspect the live site, apply the correct fix, re-run. Do NOT use for creating new tests.",
-      "location": ".opencode/skills/test-healing.md"
-    },
-    {
-      "name": "page-object-creator",
-      "description": "Use when creating new page object classes. Provides the template, locator conventions, BasePage integration rules, and duplicate-ID workarounds specific to this project. Do NOT use for test classes.",
-      "location": ".opencode/skills/page-object-creator.md"
-    },
-    {
-      "name": "smoke-triage",
-      "description": "Use when deciding which tests should be marked as smoke, how to annotate them, and how to verify the smoke suite passes. Do NOT use for general test creation.",
-      "location": ".opencode/skills/smoke-triage.md"
-    }
-  ],
+  "skills": {
+    "paths": [".opencode/skills"]
+  },
   "agent": {
     "test-plan-creator": {
       "description": "Analyzes websites and creates comprehensive test plans, strategy docs, and test cases",
