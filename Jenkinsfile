@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven-3.9.2'
-        jdk 'JDK-11'
+    environment {
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-11'
+        MAVEN_HOME = 'C:\\Maven\\apache-maven-3.9.2'
     }
 
     stages {
@@ -13,15 +13,9 @@ pipeline {
             }
         }
 
-        stage('Clean') {
-            steps {
-                bat 'mvn clean'
-            }
-        }
-
         stage('Smoke Tests') {
             steps {
-                bat 'mvn test -Dsurefire.suiteXmlFiles=testng-smoke.xml'
+                bat "${env.MAVEN_HOME}\\bin\\mvn clean test -Dsurefire.suiteXmlFiles=testng-smoke.xml"
             }
         }
     }
