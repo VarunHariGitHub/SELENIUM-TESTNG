@@ -1,0 +1,48 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Selenium TestNG Suite" verbose="1">
+    <test name="Navigation &amp; Layout Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.NavigationTests"/>
+        </classes>
+    </test>
+    <test name="Home Page Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.HomeTests"/>
+        </classes>
+    </test>
+    <test name="Login Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.LoginTests"/>
+        </classes>
+    </test>
+    <test name="Exception Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.ExceptionTests"/>
+        </classes>
+    </test>
+    <test name="Table Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.TableTests"/>
+        </classes>
+    </test>
+    <test name="Contact Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.ContactTests"/>
+        </classes>
+    </test>
+    <test name="Courses Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.CoursesTests"/>
+        </classes>
+    </test>
+    <test name="Blog Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.BlogTests"/>
+        </classes>
+    </test>
+    <test name="Practice Tests">
+        <classes>
+            <class name="com.seleniumtestng.tests.PracticeTests"/>
+        </classes>
+    </test>
+</suite>

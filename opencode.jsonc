@@ -1,0 +1,108 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-6",
+  "instructions": ["AGENTS.md"],
+  "skills": [
+    {
+      "name": "site-inspection",
+      "description": "Use when you need to inspect the live target website DOM to verify locators, discover element IDs/attributes, and find duplicate IDs or hidden elements. Do NOT use for code generation - only for browser inspection.",
+      "location": ".opencode/skills/site-inspection.md"
+    },
+    {
+      "name": "test-healing",
+      "description": "Use when diagnosing and fixing test failures. Follows a triage flow: classify error type, inspect the live site, apply the correct fix, re-run. Do NOT use for creating new tests.",
+      "location": ".opencode/skills/test-healing.md"
+    },
+    {
+      "name": "page-object-creator",
+      "description": "Use when creating new page object classes. Provides the template, locator conventions, BasePage integration rules, and duplicate-ID workarounds specific to this project. Do NOT use for test classes.",
+      "location": ".opencode/skills/page-object-creator.md"
+    },
+    {
+      "name": "smoke-triage",
+      "description": "Use when deciding which tests should be marked as smoke, how to annotate them, and how to verify the smoke suite passes. Do NOT use for general test creation.",
+      "location": ".opencode/skills/smoke-triage.md"
+    }
+  ],
+  "agent": {
+    "test-plan-creator": {
+      "description": "Analyzes websites and creates comprehensive test plans, strategy docs, and test cases",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "edit": "allow",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "bash": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    },
+    "test-script-creator": {
+      "description": "Generates Selenium TestNG test scripts from test cases using the project's page object model",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "edit": "allow",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "bash": "allow"
+      }
+    },
+    "test-script-reviewer": {
+      "description": "Reviews test scripts for code quality, best practices, and adherence to project conventions",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "edit": "deny",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "bash": "allow"
+      }
+    },
+    "test-script-healer": {
+      "description": "Diagnoses and fixes broken test scripts (locator changes, timeout issues, API changes)",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "edit": "allow",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "bash": "allow",
+        "webfetch": "allow"
+      }
+    },
+    "test-script-executor": {
+      "description": "Runs Selenium TestNG tests and reports pass/fail results with logs",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "edit": "deny",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "bash": "allow",
+        "shell": "allow"
+      }
+    },
+    "orchestrator": {
+      "description": "Runs the full test pipeline: plan -> create -> review -> heal -> execute",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "read": "allow",
+        "edit": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "bash": "allow",
+        "task": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      }
+    }
+  }
+}
