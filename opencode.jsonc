@@ -2,6 +2,18 @@
   "$schema": "https://opencode.ai/config.json",
   "model": "anthropic/claude-sonnet-4-6",
   "instructions": ["AGENTS.md"],
+  "mcp": {
+    "jira": {
+      "type": "local",
+      "command": ["npx", "-y", "@aashari/mcp-server-atlassian-jira"],
+      "enabled": true,
+      "env": {
+        "ATLASSIAN_SITE_NAME": "varunhari777",
+        "ATLASSIAN_USER_EMAIL": "varunhari777@gmail.com",
+        "ATLASSIAN_API_TOKEN": "{env:JIRA_API_TOKEN}"
+      }
+    }
+  },
   "skills": [
     {
       "name": "site-inspection",
