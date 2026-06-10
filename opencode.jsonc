@@ -10,7 +10,7 @@
       "env": {
         "ATLASSIAN_SITE_NAME": "varunhari777",
         "ATLASSIAN_USER_EMAIL": "varunhari777@gmail.com",
-        "ATLASSIAN_API_TOKEN": "{env:JIRA_API_TOKEN}"
+        "ATLASSIAN_API_TOKEN": "{env:ATLASSIAN_API_TOKEN}"
       }
     }
   },
