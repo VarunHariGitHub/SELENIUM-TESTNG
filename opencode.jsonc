@@ -3,11 +3,8 @@
   "model": "anthropic/claude-sonnet-4-6",
   "instructions": ["AGENTS.md"],
   "lsp": {
-    "json": true,
-    "yaml": true,
-    "bash": true,
     "typescript": {
-      "extensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".mts", ".cts"],
+      "command": ["typescript-language-server", "--stdio"],
       "initialization": {
         "preferences": {
           "includePackageJsonAutoImports": "on",
