@@ -2,6 +2,20 @@
   "$schema": "https://opencode.ai/config.json",
   "model": "anthropic/claude-sonnet-4-6",
   "instructions": ["AGENTS.md"],
+  "lsp": {
+    "json": true,
+    "yaml": true,
+    "bash": true,
+    "typescript": {
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".mts", ".cts"],
+      "initialization": {
+        "preferences": {
+          "includePackageJsonAutoImports": "on",
+          "autoImportFileExcludePatterns": ["node_modules"]
+        }
+      }
+    }
+  },
   "mcp": {
     "jira": {
       "type": "local",

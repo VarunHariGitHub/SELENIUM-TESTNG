@@ -5,3 +5,5 @@ target/
 test-output/
 .DS_Store
 .env
+node_modules/
+.playwright-mcp/
