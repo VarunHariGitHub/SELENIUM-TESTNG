@@ -3,8 +3,12 @@ package com.seleniumtestng.tests;
 import com.seleniumtestng.base.BaseTest;
 import com.seleniumtestng.config.ConfigReader;
 import com.seleniumtestng.pages.ContactPage;
+import com.seleniumtestng.util.ExcelUtil;
+
+import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ContactTests extends BaseTest {
@@ -15,14 +19,17 @@ public class ContactTests extends BaseTest {
     public void initPage() {
         contactPage = new ContactPage(driver);
         String url = ConfigReader.getBaseUrl() + "/contact/";
-        for (int i = 0; i < 2; i++) {
-            try {
-                driver.get(url);
-                return;
-            } catch (Exception e) {
-                if (i == 1) throw e;
-            }
+        try {
+            driver.get(url);
+        } catch (TimeoutException e) {
+            // reCAPTCHA may cause page load timeout; DOM is already available
         }
+    }
+
+    @DataProvider(name = "contactFormData")
+    public Object[][] getContactFormData() {
+        String filePath = "src/test/resources/testdata/contact-data.xlsx";
+        return ExcelUtil.getData(filePath, "ContactData");
     }
 
     @Test(groups = "smoke")
@@ -43,11 +50,11 @@ public class ContactTests extends BaseTest {
                 "Should stay on contact page after submitting empty form");
     }
 
-    @Test
-    public void testSubmitInvalidEmail() {
-        contactPage.fillForm("Test", "User", "invalid-email", "Test message");
+    @Test(dataProvider = "contactFormData")
+    public void testSubmitContactForm(String firstName, String lastName, String email, String message) {
+        contactPage.fillForm(firstName, lastName, email, message);
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("contact"),
-                "Should stay on contact page when email is invalid");
+                "Should stay on contact page after submitting form");
     }
 }

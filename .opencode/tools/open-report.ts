@@ -4,10 +4,22 @@ import path from "path"
 export default tool({
   description: "Open the latest test report in the default browser",
   args: {
-    type: tool.schema.enum(["surefire", "testng"]).optional().describe("Report type: surefire for index.html, testng for testng-results.xml (default: surefire)"),
+    type: tool.schema.enum(["surefire", "testng", "extent"]).optional().describe("Report type: surefire (index.html), testng (testng-results.xml), extent (ExtentReport) — default: surefire"),
   },
   async execute(args, context) {
     const projectRoot = context.worktree
+
+    if (args.type === "extent") {
+      const reportPath = path.join(projectRoot, "target", "extent-reports", "index.html")
+      try {
+        await Bun.file(reportPath).text()
+        const uri = `file:///${reportPath.replace(/\\/g, "/")}`
+        await Bun.$`powershell -Command "Start-Process '${uri}'"`.text()
+        return `Opened Extent Report at ${uri}`
+      } catch {
+        return `⚠ No Extent Report found. Run tests first.`
+      }
+    }
 
     if (args.type === "testng") {
       const reportPath = path.join(projectRoot, "target", "surefire-reports", "testng-results.xml")

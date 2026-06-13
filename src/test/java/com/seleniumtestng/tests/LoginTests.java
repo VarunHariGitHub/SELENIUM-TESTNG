@@ -4,8 +4,11 @@ import com.seleniumtestng.base.BaseTest;
 import com.seleniumtestng.config.ConfigReader;
 import com.seleniumtestng.pages.LoggedInPage;
 import com.seleniumtestng.pages.LoginPage;
+import com.seleniumtestng.util.ExcelUtil;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTests extends BaseTest {
@@ -18,30 +21,40 @@ public class LoginTests extends BaseTest {
         driver.get(ConfigReader.getBaseUrl() + "/practice-test-login/");
     }
 
-    @Test(groups = "smoke")
-    public void testPositiveLogin() {
-        loginPage.login("student", "Password123");
-        LoggedInPage loggedInPage = new LoggedInPage(driver);
-        Assert.assertTrue(driver.getCurrentUrl().contains("logged-in-successfully"),
-                "URL should contain 'logged-in-successfully'");
-        String msg = loggedInPage.getSuccessMessage();
-        Assert.assertTrue(msg.contains("Congratulations") || msg.contains("successfully logged in"),
-                "Success message should contain congratulations text");
-        Assert.assertTrue(loggedInPage.isLogoutButtonDisplayed(), "Logout button should be displayed");
+    @DataProvider(name = "loginData")
+    public Object[][] getLoginData() {
+        String filePath = "src/test/resources/testdata/login-data.xlsx";
+        return ExcelUtil.getData(filePath, "LoginData");
     }
 
-    @Test
-    public void testNegativeUsername() {
-        loginPage.login("incorrectUser", "Password123");
-        Assert.assertTrue(loginPage.isErrorDisplayed(), "Error message should be displayed");
-        Assert.assertEquals(loginPage.getErrorMessage(), "Your username is invalid!");
-    }
+    @Test(groups = "smoke", dataProvider = "loginData")
+    public void testLogin(String username, String password, String expectedResult) {
+        loginPage.login(username, password);
 
-    @Test
-    public void testNegativePassword() {
-        loginPage.login("student", "incorrectPassword");
-        Assert.assertTrue(loginPage.isErrorDisplayed(), "Error message should be displayed");
-        Assert.assertEquals(loginPage.getErrorMessage(), "Your password is invalid!");
+        switch (expectedResult) {
+            case "positive":
+                LoggedInPage loggedInPage = new LoggedInPage(driver);
+                Assert.assertTrue(driver.getCurrentUrl().contains("logged-in-successfully"),
+                        "URL should contain 'logged-in-successfully'");
+                String msg = loggedInPage.getSuccessMessage();
+                Assert.assertTrue(msg.contains("Congratulations") || msg.contains("successfully logged in"),
+                        "Success message should contain congratulations text");
+                Assert.assertTrue(loggedInPage.isLogoutButtonDisplayed(), "Logout button should be displayed");
+                break;
+
+            case "negative-username":
+                Assert.assertTrue(loginPage.isErrorDisplayed(), "Error message should be displayed");
+                Assert.assertEquals(loginPage.getErrorMessage(), "Your username is invalid!");
+                break;
+
+            case "negative-password":
+                Assert.assertTrue(loginPage.isErrorDisplayed(), "Error message should be displayed");
+                Assert.assertEquals(loginPage.getErrorMessage(), "Your password is invalid!");
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown expectedResult: " + expectedResult);
+        }
     }
 
     @Test

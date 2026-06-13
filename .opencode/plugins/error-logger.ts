@@ -10,7 +10,7 @@ export const ErrorLogger: Plugin = async ({ directory }) => {
       if (event.type !== "session.error") return
 
       const timestamp = new Date().toISOString().replace("T", " ").substring(0, 19)
-      const message = event.error?.message || event.error || "Unknown error"
+      const message = event.properties.error?.data?.message || "Unknown error"
       const entry = `- **${timestamp}** | ${message}\n`
 
       try {

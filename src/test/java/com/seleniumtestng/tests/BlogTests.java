@@ -12,14 +12,17 @@ public class BlogTests extends BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void initPage() {
         driver.get(ConfigReader.getBaseUrl() + "/blog/");
+        driver.manage().window().minimize();;
+    
     }
 
-    @Test(groups = "smoke")
+    @Test(groups = "smoke",description = "Verify that the blog page loads successfully and contains expected elements")
     public void testBlogPageLoads() {
         String title = driver.getTitle();
         Assert.assertTrue(title.toLowerCase().contains("blog") || title.toLowerCase().contains("test automation"),
                 "Page title should contain blog-related text");
         boolean hasArticles = driver.findElements(By.cssSelector("article, .post, .entry")).size() > 0;
         Assert.assertTrue(hasArticles, "Blog articles should be present");
+        System.out.println("Blog page loaded successfully with title: " + title);
     }
 }
